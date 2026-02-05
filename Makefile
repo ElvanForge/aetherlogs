@@ -1,25 +1,17 @@
-.PHONY: build-rust build-go build clean sync
+.PHONY: build-parser build-api build-web clean
 
-# Targets
-build-rust:
-	@echo "==> Building Rust Parser..."
-	cd rust-analyzer && cargo build --release
-	mkdir -p bin
-	cp rust-analyzer/target/release/rust-analyzer bin/parser
+build-parser:
+	cd parser-core && cargo build --release
 
-build-go:
-	@echo "==> Building Go Backend..."
-	mkdir -p bin
-	go build -o bin/server cmd/server/main.go
+build-api: build-parser
+	cd api-gateway && go build -o ../bin/server ./cmd/server
 
-build: build-rust build-go
+build-web:
+	cd web && npm run build
+
+build-all: build-api build-web
 
 clean:
-	@echo "==> Cleaning artifacts..."
-	rm -rf bin
-	cd rust-analyzer && cargo clean
-
-sync:
-	@echo "==> Syncing environments..."
-	git pull origin main
-	go mod tidy
+	rm -rf bin/*
+	cd parser-core && cargo clean
+	cd web && rm -rf .svelte-kit build node_modules
