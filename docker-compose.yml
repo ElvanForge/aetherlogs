@@ -1,0 +1,39 @@
+# Use a modern version like 3.8
+version: "3.8"
+
+services:
+  # RabbitMQ service with Management UI
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: aetherlogs-mq
+    ports:
+      - "5672:5672"   # AMQP protocol port
+      - "15672:15672" # HTTP Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - aetherlogs-net
+
+  # PostgreSQL service
+  postgres:
+    image: postgres:16-alpine
+    container_name: aetherlogs-db
+    ports:
+      - "5432:5432" # Standard Postgres port
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: aetherlogs
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persists data across restarts
+    networks:
+      - aetherlogs-net
+
+# Define named volumes and networks for persistence and isolation
+volumes:
+  postgres_data:
+
+networks:
+  aetherlogs-net:
+    driver: bridge

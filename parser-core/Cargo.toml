@@ -11,6 +11,9 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 [dependencies]
 bytemuck = { version = "1.14", features = ["derive"] }
 byteorder = "1.5"
+lapin = "4.0.3"
+nom = "8.0.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 thiserror = "1.0"
+tokio = "1.49.0"
