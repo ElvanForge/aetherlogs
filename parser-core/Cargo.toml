@@ -4,8 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [lib]
-# staticlib creates a .a file for Go to link against
-# cdylib creates a .so/.dll for dynamic loading
+
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [dependencies]
